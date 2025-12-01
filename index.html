@@ -47,7 +47,6 @@
 
     @media (max-width:900px){.grid{grid-template-columns:1fr; display: flex; flex-direction: column-reverse;} .thumb{width:72px;height:72px}}
 
-    /* Add overlay/modal styles */
     .overlay{
       position:fixed;
       inset:0;
@@ -70,7 +69,7 @@
       width:90%;
       box-shadow:0 8px 30px rgba(2,6,23,0.25);
       text-align:left;
-      position:relative; /* ajouté pour pouvoir positionner la croix */
+      position:relative;
     }
     .modal h2{margin:0 0 8px 0;font-size:18px}
     .modal p{margin:0 0 12px;color:var(--muted);font-size:14px}
@@ -124,7 +123,6 @@
     </header>
 
     <div class="grid">
-      <!-- left: list -->
       <div>
         <div class="card">
           <div class="search">
@@ -142,12 +140,10 @@
           </div>
 
           <div class="list" id="resourceList">
-            <!-- items inserted here -->
           </div>
         </div>
       </div>
 
-      <!-- right: info / exemples -->
       <aside>
         <div class="card">
           <h3 style="margin:0 0 8px 0">C'est quoi un fichier PPD ?</h3>
@@ -162,10 +158,8 @@
     </div>
   </div>
 
-  <!-- Insert thank-you overlay -->
   <div id="thankYouOverlay" class="overlay" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
-      <!-- croix de fermeture en haut à droite -->
       <button id="closeThanks" class="close-btn" type="button" aria-label="Fermer la fenêtre">&times;</button>
 
       <h2 id="thanksTitle">Merci pour le téléchargement !</h2>
@@ -178,22 +172,17 @@
 
   <div id="imgLightbox" class="overlay" style="z-index:2000;">
     <div id="imgLightboxInner" style="
-      width:30vw;
       display: flexbox;
       align-items: center;">
       <div style="position:relative; display:inline-block;">
       
           <button id="closeLightboxBtn" type="button" class="close-btn"
 >&times;</button>
-      <img id="imgLightboxImg" src="" alt="" style="
-         width: 100%; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.4); ">
+      <img id="imgLightboxImg" src="" alt="" style="max-width: 80vw; max-height:80vh; box-shadow:0 8px 30px rgba(0,0,0,0.4); ">
     </div>
   </div>
 
   <script>
-// =======================
-//     LISTE RESSOURCES
-// =======================
 const resources = [
   {
     id: 1,
@@ -257,11 +246,18 @@ const resources = [
     previewbig: './publication_instagram_large.jpeg',
     data: 'publication_instagram.psd'
   },
+
+  {
+    id: 17,
+    name: 'Menu de restaurant',
+    type: 'mockup',
+    tags: ['.psd','menu','marriage','carte', 'A4'],
+    preview: './mockup_menu.jpeg',
+    previewbig: './mockup_menu_large.jpeg',
+    data: 'mockup_menu.psd'
+  },
 ];
 
-// =======================
-//     FONCTIONS UTILES
-// =======================
 function normalizeText(s){
   return (s||'').toString().normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase();
 }
@@ -273,9 +269,6 @@ function matches(resource, queryTerms){
   return queryTerms.every(q => hayNorm.includes(normalizeText(q)));
 }
 
-// =======================
-//     RENDU LISTE
-// =======================
 function renderResources(list){
   const container = document.getElementById('resourceList');
   container.innerHTML = '';
@@ -294,7 +287,6 @@ function renderResources(list){
       img.alt = res.name;
       img.style.cursor = "zoom-in";
 
-      // >>>>>>>>>>>>>> Lightbox Fullscreen Image
       img.addEventListener("click", () => showImageFull(res.previewbig, res.name));
 
       thumb.appendChild(img);
@@ -302,12 +294,12 @@ function renderResources(list){
       thumb.innerHTML = '<?xml version="1.0" encoding="UTF-8"?><svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><defs><style>.cls-1 {fill: #9ca3af;}.cls-2 {isolation: isolate;}.cls-3 {fill: none;stroke: #9ca3af;stroke-miterlimit: 6;stroke-width: 1.8px;}</style></defs><rect class="cls-3" x="4.5" y="4.5" width="27" height="27" rx="3" ry="3"/><g class="cls-2"><path class="cls-1" d="M6.25,28.9v-1.51h1.51v1.51h-1.51Z"/><path class="cls-1" d="M8.8,28.9v-7.88h2.55c.97,0,1.6.04,1.89.12.45.12.83.38,1.13.77.3.4.46.91.46,1.54,0,.48-.09.89-.26,1.22-.18.33-.4.59-.67.78-.27.19-.55.31-.83.37-.38.08-.93.11-1.65.11h-1.04v2.97h-1.59ZM10.39,22.35v2.24h.87c.63,0,1.05-.04,1.26-.12.21-.08.38-.21.5-.39.12-.17.18-.38.18-.61,0-.29-.08-.52-.25-.71-.17-.19-.38-.3-.64-.35-.19-.04-.57-.05-1.14-.05h-.77Z"/><path class="cls-1" d="M15.62,28.9v-7.88h2.55c.97,0,1.6.04,1.89.12.45.12.83.38,1.13.77.3.4.46.91.46,1.54,0,.48-.09.89-.26,1.22-.18.33-.4.59-.67.78-.27.19-.55.31-.83.37-.38.08-.93.11-1.65.11h-1.04v2.97h-1.59ZM17.21,22.35v2.24h.87c.63,0,1.05-.04,1.26-.12.21-.08.38-.21.5-.39.12-.17.18-.38.18-.61,0-.29-.08-.52-.25-.71-.17-.19-.38-.3-.64-.35-.19-.04-.57-.05-1.15-.05h-.77Z"/><path class="cls-1" d="M22.44,21.02h2.91c.66,0,1.16.05,1.5.15.46.14.86.38,1.19.73s.58.77.75,1.28c.17.5.26,1.12.26,1.86,0,.65-.08,1.21-.24,1.68-.2.57-.48,1.04-.84,1.39-.28.27-.65.48-1.12.63-.35.11-.82.17-1.41.17h-2.99v-7.88ZM24.03,22.35v5.22h1.19c.44,0,.76-.03.96-.08.26-.06.47-.17.64-.33s.31-.41.42-.76c.11-.35.16-.83.16-1.44s-.05-1.08-.16-1.4c-.11-.33-.26-.58-.45-.76s-.44-.31-.74-.37c-.22-.05-.66-.08-1.31-.08h-.71Z"/></g></svg>';
     }
 
-    // Meta
+
     const meta = document.createElement('div');
     meta.className = 'meta';
     meta.innerHTML = `<div class="title">${res.name}</div><div class="small">Type: ${res.type.toUpperCase()}</div>`;
 
-    // Tags
+
     const tags = document.createElement('div');
     tags.className = 'tags';
     (res.tags||[]).forEach(t => {
@@ -320,7 +312,7 @@ function renderResources(list){
     });
     meta.appendChild(tags);
 
-    // Actions
+
     const actions = document.createElement('div');
     actions.className = 'actions';
     const dl = document.createElement('button'); 
@@ -340,9 +332,7 @@ function renderResources(list){
     list.length + (list.length>1 ? ' résultats' : ' résultat');
 }
 
-// =======================
-//    RECHERCHE & FILTRES
-// =======================
+
 function addTagToSearch(tag){
   const input = document.getElementById('searchInput');
   const raw = input.value || '';
@@ -371,7 +361,6 @@ function applyFilters(){
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 document.getElementById('typeSelect').addEventListener('change', applyFilters);
 
-// Clear search on Escape
 document.getElementById('searchInput').addEventListener('keydown', (e)=>{
   if(e.key==='Escape'){
     document.getElementById('searchInput').value='';
@@ -379,9 +368,6 @@ document.getElementById('searchInput').addEventListener('keydown', (e)=>{
   }
 });
 
-// =======================
-//    TÉLÉCHARGEMENT
-// =======================
 function downloadResource(res) {
   const source = res.data;
   const filename = source.split('/').pop();
@@ -396,9 +382,6 @@ function downloadResource(res) {
   showThankYou();
 }
 
-// =======================
-//    LIGHTBOX IMAGES
-// =======================
 const lightbox = document.getElementById("imgLightbox");
 const lightboxImg = document.getElementById("imgLightboxImg");
 const closeLightboxBtn = document.getElementById("closeLightboxBtn");
@@ -421,9 +404,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") lightbox.classList.remove("show");
 });
 
-// =======================
-//    OVERLAY MERCI
-// =======================
 function showThankYou(){
   const o = document.getElementById('thankYouOverlay');
   o.classList.add('show');
@@ -439,9 +419,7 @@ function hideThankYou(){
   stopConfetti();
 }
 
-// =======================
-//    CONFETTI
-// =======================
+
 let _conf = { canvas: null, ctx: null, particles: [], raf: null, resizeHandler: null, startTime: 0 };
 
 function startConfetti(container) {
@@ -522,16 +500,14 @@ function stopConfetti() {
   _conf.canvas.remove();
   _conf = { canvas: null, ctx: null, particles: [], raf: null, resizeHandler: null, startTime: 0 };
 }
-  // show/hide overlay, start confetti and let it fade
+
   function showThankYou(){
       const o = document.getElementById('thankYouOverlay');
       if(!o) return;
       o.classList.add('show');
       o.setAttribute('aria-hidden','false');
-      // start confetti inside the overlay
       startConfetti(o);
       clearTimeout(o._hideTimeout);
-      // hide overlay after total duration (matching confetti lifecycle)
       o._hideTimeout = setTimeout(()=>hideThankYou(), 6000);
     }
     function hideThankYou(){
@@ -543,7 +519,6 @@ function stopConfetti() {
       stopConfetti();
     }
 
-    // close button and click outside to close (attache de façon défensive)
     const closeBtn = document.getElementById('closeThanks');
     if (closeBtn) closeBtn.addEventListener('click', hideThankYou);
 
@@ -554,14 +529,12 @@ function stopConfetti() {
       });
     }
 
-    // fermeture au clavier (Escape)
     document.addEventListener('keydown', (e)=>{
       if(e.key === 'Escape') hideThankYou();
     });
 
     function previewResource(res){
       if(res.type === 'mockup'){
-        // Affiche l'image seule dans une nouvelle fenêtre
         const w = window.open('', '_blank');
         w.document.title = res.name;
         const img = w.document.createElement('img');
@@ -578,7 +551,6 @@ function stopConfetti() {
         w.document.body.style.height = '100vh';
         w.document.body.appendChild(img);
       } else {
-        // show text PPD in a modal-like window
         const w = window.open('', '_blank');
         fetch(res.dataUrl).then(r=>r.text()).then(txt=>{
           w.document.title = res.name;
@@ -594,23 +566,21 @@ function stopConfetti() {
 
     const preview = "./affiche_metro.jpeg";
 
-    // Fonction pour afficher la prévisualisation
+
     function showMockupPreview(preview) {
       const previewImage = document.getElementById('previewImage');
       if (previewImage) {
-        previewImage.src = preview; // Définit la source de l'image
+        previewImage.src = preview; 
       } else {
         console.error("L'élément de prévisualisation n'existe pas.");
       }
     }
 
-    // Appel de la fonction avec l'URL de prévisualisation
+
     showMockupPreview(preview);
 
-    // ---------------- Search logic ----------------
     function getQueryTerms(){
       const raw = document.getElementById('searchInput').value || '';
-      // split by spaces, commas, semicolons
       return raw.split(/[\s,;]+/).map(s=>s.trim()).filter(Boolean);
     }
 
@@ -626,11 +596,8 @@ function stopConfetti() {
 
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('typeSelect').addEventListener('change', applyFilters);
-
-    // initial render : affiche tout par défaut
     applyFilters();
 
-    // Accessibility: allow Enter to clear search
     document.getElementById('searchInput').addEventListener('keydown', (e)=>{ if(e.key==='Escape'){document.getElementById('searchInput').value='';applyFilters();}});
   </script>
 </body>
